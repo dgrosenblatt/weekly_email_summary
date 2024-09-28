@@ -1,0 +1,244 @@
+Return-Path: <dgrosenblatt@gmail.com>
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+ by inbound-smtp.us-east-1.amazonaws.com with SMTP id tpkqoaf2hfddnvachs52v2r81fl49vv9qohb13g1
+ for hello@weeklyemail.wtf;
+ Fri, 27 Sep 2024 19:02:43 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of _spf.google.com designates 209.85.221.42 as permitted sender) client-ip=209.85.221.42; envelope-from=dgrosenblatt@gmail.com; helo=mail-wr1-f42.google.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of _spf.google.com designates 209.85.221.42 as permitted sender) client-ip=209.85.221.42; envelope-from=dgrosenblatt@gmail.com; helo=mail-wr1-f42.google.com;
+ dkim=pass header.i=@gmail.com;
+ dmarc=pass header.from=gmail.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFHOVExSzcvYU9tOHRhd21MRFZWUWlUQzI2QjVkdkNYT3ZtcE9JUU1wbWh3RkJqTXZuTG00YUtQYXZ5OGgxMjJrU0I2NnFaci9zQ0UzZFZUZitTRHZVVm12Q1NVakJjT0s0empIcVNDRXFKS2xTdWlrT1pTL0ZyUU5pQUR5ZmloUmxKWW8rM3lzLzVlOU04OUVFUi9CSThzRys5cnhVaFZ3LzY4enlJZDZnVUtKVGV1M3JJU1l5RlpnMDduVHZSYlhqb0ljWDMvTitLS2MxTm1FMHA0M3ZwL091SityUW9xeFRQSE15RzdJNFJWbW1kYlNuTnZVRmJwcjVoVm9wZFRiMWhFMkl1V0FHQytrbWlXbCtCQ1FiN0xOaEdhZU4vTE43dExIV3d6SVRKOFE9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=Ed+ZFxEiPVM4orquzPDxE4hnGkyeZQGuJR93K+anS2QtFMvEQh6KtSOEWUVvHZjLe4kk4bFiUxGFtrcLv6zWr6VKlpZSzb4NS16C2BgBKudk2AG2SvuRj6r0Unn7MtJR1FOzsJZi4aJ0dcuRpwJv7MefiCgxR26ZH5dNheQx0Wc=; c=relaxed/simple; s=ug7nbtf4gccmlpwj322ax3p6ow6yfsug; d=amazonses.com; t=1727463764; v=1; bh=NTUY796zsb8aMkrR3U+70y7aXHOYea/Ayqu1U5VvjEI=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37cd26c6dd1so1696064f8f.3
+        for <hello@weeklyemail.wtf>; Fri, 27 Sep 2024 12:02:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727463762; x=1728068562; darn=weeklyemail.wtf;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6Bx/ogwTD3waZ7uC/f/0kIhmpEVm73+SKD1tcic5AiI=;
+        b=YaomDNXgdRaShd2xnQq4fnqnQ2GyTsDoLwrgeWsEqIl4sFblpLEF20IhpODklRS+lN
+         4EMtk8q2OOFTDU0Ja1v1UcuJCLByznAC/dcOlvBXnbvOHfPv4WsuWGF0rDkE2g6ZyAuF
+         gIyYDEZ9/6/qDSM12PNhlIDPU2m1jRvFyIPrmCcZ69jwq6XHRYiBSiKp9yR0W0cCxjr6
+         r5cK/lWRtFGnQ5j1gwPXo2/Iej6ULQvy/DSuW8ZuIsMIXDL8RLN6nfXUgbwm3huLkwxq
+         TksjAWP4/BJIbp5kFsj/P4v3TJSowtXSLcaHvnS3kY8WsdKlwEa5os/HreFLZbDXZgS8
+         BWxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727463762; x=1728068562;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6Bx/ogwTD3waZ7uC/f/0kIhmpEVm73+SKD1tcic5AiI=;
+        b=BiIrkIB6hoXP5SjvzWeSzjp5doZ82HbMXzEFn96KzIdR3oLNg2kj5sQJIAfxrT8CRz
+         mtcPtMZj7XqdSInA1iuf8o5zZdgknMDc0pOkNyHKmq5fqM77u5TWkAMcPs0aWzm0raw1
+         s8f861vhbito6DS7TcnFUCSA+OmX72uEkqJuxLQrb5AC5uNW/23gyXvoWkCABHwQU154
+         l3as0hWaguMRXIstrtzcFzbUL7miAYoSCVy8YTXen+cQj5dZ/IXGFV0GhPQrKMauQiWH
+         3LYXvU25m6gEmCcXiCW2sLV8i1bAS0o97gMzF9e1AqKp/sXQ2Q6DFSe9cCKZAwLTiJtQ
+         VL2g==
+X-Gm-Message-State: AOJu0YyklliJMU9wKRwUI2SKvB8H11L6FzR2QyNW2dwFxegyfegmfixk
+	eyEVMERihKnn9rsG/9eAK1NrNmHviDi98K6NwIX2lwdvay7AZF/IX0TlKW+Z9aN/1l/Va34HEcZ
+	X1jO+fb5f6qBufBeAKvfcrriB5mVQtQ==
+X-Google-Smtp-Source: AGHT+IF/kHjoPNHSKYk5IgiTJhT2ZGCQaOvRQohA6DDg+MJWbQZWP7ArsbV6GGE24h1kj7iBGwMDkz2ydWwlJleUQM4=
+X-Received: by 2002:adf:ed4e:0:b0:374:c11c:c5ca with SMTP id
+ ffacd0b85a97d-37cd5b04bc8mr3927993f8f.46.1727463761756; Fri, 27 Sep 2024
+ 12:02:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <20240927185506.812d4467f1190044@mail1.veracross.com>
+In-Reply-To: <20240927185506.812d4467f1190044@mail1.veracross.com>
+From: Daniel Rosenblatt <dgrosenblatt@gmail.com>
+Date: Fri, 27 Sep 2024 15:02:30 -0400
+Message-ID: <CAG5G020mZUd_grsUOg6oGdnaPEN51gc__iHHuykU0LdPFGDbug@mail.gmail.com>
+Subject: Fwd: Looking Inward and Outward
+To: hello@weeklyemail.wtf
+Content-Type: multipart/alternative; boundary="000000000000e1cee506231e7f18"
+
+--000000000000e1cee506231e7f18
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Jack Donaghy <m@mail1.veracross.com>
+Date: Fri, Sep 27, 2024 at 2:55=E2=80=AFPM
+Subject: Looking Inward and Outward
+To: <dgrosenblatt@gmail.com>
+
+
+September 27, 2024
+
+As many of you know, going shopping for the world? How would you do it?
+
+<https://email.mail1.veracross.com/c/eJxEjLGOhCAURb8GSsN7PEEKim38gN3tJ4jP0Y=
+wjBoj-_oZtprwn557Zkx1AsgeLlozWysjV47IMzliGCFM08wTgguZF6zhb18MkN48KSTm0MPS9M=
+t0AOBMZuwA4pYgEqXfYduguziHmVEoX01vufq31LEJ_CRwFjvd9d0uIPKX0aoLA8Xfl71DW7Seu=
+Ke0y-_mZU-Fj2kOtgtSzdf9jl0d5xUfcNz6qz-3UNjfhcb686TU0cHIu6fhw55AG-xcAAP__klR=
+OfA>
+<https://email.mail1.veracross.com/c/eJxEjbtu7CAQhp8GSguGAeyC4jRuj5SkX-Exvi=
+issYC1lbeP2CbdzPffZoe2lzw4acGiUUoYvjnykxELeW1Ia4ULGqNgknYQCIslz3cHAlAMYGWvt=
+TBdL2FGNHaRchACkaF4-j3K7grZU06ldJSePLqt1rMw9Y_ByGC877v7Sa_6mkLTGYzEYPzwZdv_=
+5_VrC-_zk7aUIs9uXnMq4Ziir5WhWNvEu_dywC96UNzDUV1uofaHZnic385oJRs4Qy7p-OPDANj=
+b3wAAAP__r-dSAg>
+<https://email.mail1.veracross.com/c/eJxEjU2OhCAUhE8DuzbwePKzYDEbr9FRfLakaT=
+FA9PoTehazrC9fVa0ejZWcvDRgUCslNN_9aFezOElOjU4RbotdNre5TZG1QVrNowcBKBwYacdR6=
+MFKWBG12aR0QiAyFJ85JjlcVOZQcq1DyB-e_N7aWZn6YTAxmO77HlI83rTGowsMphr2nBODqe30=
+KHPd4-MP8eLXV8mVjiXNrTEUr37x3b088Cs8Q4p0NP9t9UxdeJ5vr0clOzip1Hz8c-cArfkNAAD=
+__9s5Ujg>
+<https://email.mail1.veracross.com/c/eJxEjL2urSAQRp8GSjMzDiAFxW18jR0ujj85Kg=
+aIvv6Juznlt7K-NQV2A2oJ6Mix7Xuweg0RZBYGmTB5OxnHfeKE4pEMD7MBvQUCYvDkcDAGbDcgT=
+czWzYgegFkxHHHbsbulxFRyrV3Kh97D2tpVVf9P0ahofJ6n287a4lLi8RqKxrZKiXXdalpz3nUJ=
+01JylfP_HltTDMsb_tbuQPpOn7RvcrbwPb1bXuFz_QRrenzBJaXm8497Tzy43wAAAP__0GRPAg>
+
+<https://email.mail1.veracross.com/c/eJxEy82ugyAQxfGnkSUZxpGBxWz7Gg3yYc210o=
+DR17-xmy7PP-eXhNgZlcUwMtlxBKteAoY9R0oBcA4ZS4mucPGOqMw5pqhWQUACj2zcNIHVzmAis=
+lyM8QBEA8E7rJvRZ24httq7jvWtNhnwMeDjui7dQn-turZFNUlLqz3v8xaOYyBYbvsFp6A64zNu=
+a94P-ZJ75_vw_PyJnUZzh09uve6_7j2S4_8AAAD__9zwRQ0>
+
+Manage My Messages
+<https://email.mail1.veracross.com/c/eJxUkE1vozAQQH-NOUb-AsKBQ1rWWaI1UatkU3=
+KpjGOCXRsjTNOEX7-ie1jtYQ7z9DQjvUtO0zWKVI5SnNKEEJhEXa6QjNtGStRgSlAKEwjTVqYiR=
+pTSmGSRzjHEFGY4Res4hslqjfCF0iRtEcogpBRQ6IS2aHVTo5CjD2ElvYts3k3TEADZAMwAZq1w=
+2j7-lwBmowidBpiFzybIUQ-T9j3AzIleXBUg7EM9ACnUY-ebEzOl8ZqbcuamM9zUcXX4MddGUl6=
+8mmp-smdXk_2JdfXhiGpXo2p7hHzuDNdlKN1rd9kyXb9VdrkjHZvF1rbnLYP1addJfNS_nndW_X=
+wapGNQnLLPv_82j-oZ3vkyv1_u-8Kj6uC_OPOL_3V-280Njlu5DXqvyzsvNoQfat2-AFIAUkRjf=
+rmOPqi-sWKaAIXXpdd3pFuOo5t8l1arfsq_Wyy7WoT34SNPYoIWMKgx-P4fzzJM1-mfAAAA__8e=
+F5cU>
+
+--000000000000e1cee506231e7f18
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">---------- Forwarded message ---------<br>From: <strong cla=
+ss=3D"gmail_sendername" dir=3D"auto">Jack Donaghy</strong> <span =
+dir=3D"auto">&lt;<a href=3D"mailto:m@mail1.veracross.com">m@mail1.veracross=
+.com</a>&gt;</span><br>Date: Fri, Sep 27, 2024 at 2:55=E2=80=AFPM<br>Subjec=
+t: Looking Inward and Outward<br>To:  &lt;<a href=3D"=
+mailto:dgrosenblatt@gmail.com">dgrosenblatt@gmail.com</a>&gt;<br></div><br>=
+<br><div class=3D"msg6004348646118125670">      <div bgcolor=3D""> <table w=
+idth=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" bgcolor=3D""=
+> <tbody><tr> <td width=3D"100%" align=3D"center" valign=3D"top" style=3D"m=
+in-width:640px"> <table width=3D"640" align=3D"center" cellspacing=3D"0" ce=
+llpadding=3D"0" border=3D"0"> <tbody><tr> <td align=3D"right" width=3D"200"=
+ style=3D"padding:15px 0px;font-family:Helvetica,Arial,sans-serif;font-size=
+:11px;color:#666666"> </td> </tr> </tbody></table> <table align=3D"center" =
+width=3D"640" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"> <tbody><tr>=
+ <td> <table width=3D"640" bgcolor=3D"" cellspacing=3D"0" cellpadding=3D"0"=
+ border=3D"0" align=3D"center"> <tbody><tr> <td align=3D"" style=3D"padding=
+:20px"> </td> </tr> </tbody></table> </td> </tr> </tbody></table> <table wi=
+dth=3D"640" align=3D"center" valign=3D"top" border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0" bgcolor=3D"FFFFFF"> <tbody><tr> <td> <table align=3D"cent=
+er" width=3D"640" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"> <tbody>=
+<tr> <td> <table width=3D"640" bgcolor=3D"#FFFFFF" cellspacing=3D"0" cellpa=
+dding=3D"0" border=3D"0" align=3D"center"> <tbody><tr> <td style=3D"padding=
+:10px 0px"> <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" align=3D"left"> <tbody><tr> <td> <img src=3D"https://res.cloudina=
+ry.com/veracross/image/upload/w_640,c_lfill,f_auto,fl_lossy/v1/rashi/5854/T=
+RS_Reflection_Header_Final_kilod3" width=3D" 640 "> </td> </tr> </tbody></t=
+able> </td> </tr> </tbody></table> </td> </tr> </tbody></table> <table alig=
+n=3D"center" width=3D"640" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"=
+> <tbody><tr> <td> <table width=3D"640" bgcolor=3D"#FFFFFF" cellspacing=3D"=
+0" cellpadding=3D"0" border=3D"0" align=3D"center"> <tbody><tr> <td style=
+=3D"padding:10px 20px" align=3D"center" valign=3D"top"> <table border=3D"0"=
+ cellpadding=3D"10" cellspacing=3D"0" width=3D"100%" align=3D"left"> <tbody=
+><tr> <td valign=3D"top" align=3D"right" style=3D"text-align:right;line-hei=
+ght:22px;font-family:Georgia,Times New Roman,Courier;font-size:13px;color:#=
+000000"> <p style=3D"text-align:right;margin:0px 0px 0px 0px;line-height:22=
+px;font-family:Georgia,Times New Roman,Courier;font-size:13px;color:#000000=
+"><span><span style=3D"font-size:14px">September 27, 2024</span></span><em>=
+<span><span style=3D"font-size:14px"><br>24 Elul 5784<br></span></span></em=
+></p> </td> </tr> </tbody></table> </td> </tr> </tbody></table> </td> </tr>=
+ </tbody></table> <table align=3D"center" width=3D"640" cellpadding=3D"0" c=
+ellspacing=3D"0" border=3D"0"> <tbody><tr> <td> <table width=3D"640" bgcolo=
+r=3D"#FFFFFF" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"cen=
+ter"> <tbody><tr> <td style=3D"padding:10px 0px"> <table border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" width=3D"100%" align=3D"left"> <tbody><tr> <=
+td> <img src=3D"https://res.cloudinary.com/veracross/image/upload/w_640,c_l=
+fill,f_auto,fl_lossy/v1/rashi/5983/0-3_rddmou" width=3D" 640 "> </td> </tr>=
+ </tbody></table> </td> </tr> </tbody></table> </td> </tr> </tbody></table>=
+ <table align=3D"center" width=3D"640" cellpadding=3D"0" cellspacing=3D"0" =
+border=3D"0"> <tbody><tr> <td> <table width=3D"640" bgcolor=3D"FFFFFF" cell=
+spacing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"center"> <tbody><tr> =
+<td style=3D"padding:10px 20px" align=3D"center" valign=3D"top"> <table bor=
+der=3D"0" cellpadding=3D"10" cellspacing=3D"0" width=3D"100%" align=3D"left=
+"> <tbody><tr> <td valign=3D"top" align=3D"left" style=3D"text-align:left;l=
+ine-height:22px;font-family:Georgia,Times New Roman,Courier;font-size:13px;=
+color:#000000"> <p style=3D"text-align:left;margin:0px 0px 0px 0px;line-hei=
+ght:22px;font-family:Georgia,Times New Roman,Courier;font-size:13px;color:#=
+000000"><span><span><span><span><span><span><span><span><span><span><span><=
+span><span><span><span><span><span><span><span><span><span><span style=3D"f=
+ont-size:14px"><span><span><span><span><span><span><em>Shabbat Shalom</em>=
+=C2=A0Rashi Family,<br><br></span></span></span></span></span></span></span=
+><span style=3D"font-size:14px"><ol><li><span><span sty=
+le=3D"font-size:14px">What is something that you love about being part of t=
+he Rashi <em>kehillah?</em><br></span></span></li><li><span><span style=3D"=
+font-size:14px">When did you first learn that you could help to make the wo=
+rld a better place?<br></span></span></li><li><span><span style=3D"font-siz=
+e:14px">If you could make one broken part of the world better, what would i=
+t be? How would you do it?</span></span></li></ol> <p></p> </td> </tr> </tb=
+ody></table> </td> </tr> </tbody></table> </td> </tr> </tbody></table> <tab=
+le align=3D"center" width=3D"640" cellpadding=3D"0" cellspacing=3D"0" borde=
+r=3D"0"> <tbody><tr> <td> <table width=3D"640" bgcolor=3D"#FFFFFF" cellspac=
+ing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"center"> <tbody><tr> <td =
+style=3D"padding:10px 0px"> <table border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" width=3D"100%" align=3D"left"> <tbody><tr> <td> <img src=3D"https:=
+//res.cloudinary.com/veracross/image/upload/w_640,c_lfill,f_auto,fl_lossy/v=
+1/rashi/5985/IMG_6887_vm6h3z" width=3D" 640 "> </td> </tr> </tbody></table>=
+ </td> </tr> </tbody></table> </td> </tr> </tbody></table> </td> </tr> </tb=
+ody></table> <table width=3D"640" cellspacing=3D"0" cellpadding=3D"0" borde=
+r=3D"0" align=3D"center"> <tbody><tr align=3D"center"> <td align=3D"center"=
+ style=3D"padding:10px 30px;font-family:Georgia,Times New Roman,Courier"> <=
+a href=3D"https://email.mail1.veracross.com/c/eJxEjLGOhCAURb8GSsN7PEEKim38g=
+N3tJ4jP0YwjBoj-_oZtprwn557Zkx1AsgeLlozWysjV47IMzliGCFM08wTgguZF6zhb18MkN48K=
+STm0MPS9Mt0AOBMZuwA4pYgEqXfYduguziHmVEoX01vufq31LEJ_CRwFjvd9d0uIPKX0aoLA8Xf=
+l71DW7SeuKe0y-_mZU-Fj2kOtgtSzdf9jl0d5xUfcNz6qz-3UNjfhcb686TU0cHIu6fhw55AG-x=
+cAAP__klROfA" style=3D"text-align:center;text-decoration:none;margin-right:=
+5px" target=3D"_blank"> <img src=3D"https://360ba7f95eb31251976f-c57aa4b630=
+82f4bc395af60dace169f4.ssl.cf1.rackcdn.com/round_color_facebook.png" border=
+=3D"0" width=3D"40" height=3D"40"> </a> <a href=3D"https://email.mail1.vera=
+cross.com/c/eJxEjbtu7CAQhp8GSguGAeyC4jRuj5SkX-ExviissYC1lbeP2CbdzPffZoe2lzw=
+4acGiUUoYvjnykxELeW1Ia4ULGqNgknYQCIslz3cHAlAMYGWvtTBdL2FGNHaRchACkaF4-j3K7g=
+rZU06ldJSePLqt1rMw9Y_ByGC877v7Sa_6mkLTGYzEYPzwZdv_5_VrC-_zk7aUIs9uXnMq4Ziir=
+5WhWNvEu_dywC96UNzDUV1uofaHZnic385oJRs4Qy7p-OPDANjb3wAAAP__r-dSAg" style=3D=
+"text-align:center;text-decoration:none;margin-right:5px" target=3D"_blank"=
+> <img src=3D"https://360ba7f95eb31251976f-c57aa4b63082f4bc395af60dace169f4=
+.ssl.cf1.rackcdn.com/round_black_youtube.png" border=3D"0" width=3D"40" hei=
+ght=3D"40"> </a> <a href=3D"https://email.mail1.veracross.com/c/eJxEjU2OhCA=
+UhE8DuzbwePKzYDEbr9FRfLakaTFA9PoTehazrC9fVa0ejZWcvDRgUCslNN_9aFezOElOjU4Rbo=
+tdNre5TZG1QVrNowcBKBwYacdR6MFKWBG12aR0QiAyFJ85JjlcVOZQcq1DyB-e_N7aWZn6YTAxm=
+O77HlI83rTGowsMphr2nBODqe30KHPd4-MP8eLXV8mVjiXNrTEUr37x3b088Cs8Q4p0NP9t9Uxd=
+eJ5vr0clOzip1Hz8c-cArfkNAAD__9s5Ujg" style=3D"text-align:center;text-decora=
+tion:none;margin-right:5px" target=3D"_blank"> <img src=3D"https://360ba7f9=
+5eb31251976f-c57aa4b63082f4bc395af60dace169f4.ssl.cf1.rackcdn.com/round_col=
+or_linkedin.png" border=3D"0" width=3D"40" height=3D"40"> </a> <a href=3D"h=
+ttps://email.mail1.veracross.com/c/eJxEjL2urSAQRp8GSjMzDiAFxW18jR0ujj85KgaI=
+vv6Juznlt7K-NQV2A2oJ6Mix7Xuweg0RZBYGmTB5OxnHfeKE4pEMD7MBvQUCYvDkcDAGbDcgTcz=
+WzYgegFkxHHHbsbulxFRyrV3Kh97D2tpVVf9P0ahofJ6n287a4lLi8RqKxrZKiXXdalpz3nUJ01=
+JylfP_HltTDMsb_tbuQPpOn7RvcrbwPb1bXuFz_QRrenzBJaXm8497Tzy43wAAAP__0GRPAg" s=
+tyle=3D"text-align:center;text-decoration:none;margin-right:5px" target=3D"=
+_blank"> <img src=3D"https://360ba7f95eb31251976f-c57aa4b63082f4bc395af60da=
+ce169f4.ssl.cf1.rackcdn.com/round_color_instagram.png" border=3D"0" width=
+=3D"40" height=3D"40"> </a> </td> </tr> <tr> <td align=3D"center" style=3D"=
+color:007d99;padding:10px 30px;font-family:Georgia,Times New Roman,Courier"=
+> <span style=3D"font-weight:bold;font-size:16px">School</span><b=
+r> <br> <br><br><br> <a href=3D"https://email=
+.mail1.veracross.com/c/eJxEy82ugyAQxfGnkSUZxpGBxWz7Gg3yYc210oDR17-xmy7PP-eX=
+hNgZlcUwMtlxBKteAoY9R0oBcA4ZS4mucPGOqMw5pqhWQUACj2zcNIHVzmAislyM8QBEA8E7rJv=
+RZ24httq7jvWtNhnwMeDjui7dQn-turZFNUlLqz3v8xaOYyBYbvsFp6A64zNua94P-ZJ75_vw_P=
+yJnUZzh09uve6_7j2S4_8AAAD__9zwRQ0" style=3D"color:007d99" target=3D"_blank"=
+>www.rashi.org</a><br> <br> <a href=3D"https://email.mail1.veracross.com/c/=
+eJxUkE1vozAQQH-NOUb-AsKBQ1rWWaI1UatkU3KpjGOCXRsjTNOEX7-ie1jtYQ7z9DQjvUtO0zW=
+KVI5SnNKEEJhEXa6QjNtGStRgSlAKEwjTVqYiRpTSmGSRzjHEFGY4Res4hslqjfCF0iRtEcogpB=
+RQ6IS2aHVTo5CjD2ElvYts3k3TEADZAMwAZq1w2j7-lwBmowidBpiFzybIUQ-T9j3AzIleXBUg7=
+EM9ACnUY-ebEzOl8ZqbcuamM9zUcXX4MddGUl68mmp-smdXk_2JdfXhiGpXo2p7hHzuDNdlKN1r=
+d9kyXb9VdrkjHZvF1rbnLYP1addJfNS_nndW_XwapGNQnLLPv_82j-oZ3vkyv1_u-8Kj6uC_OPO=
+L_3V-280Njlu5DXqvyzsvNoQfat2-AFIAUkRjfrmOPqi-sWKaAIXXpdd3pFuOo5t8l1arfsq_Wy=
+y7WoT34SNPYoIWMKgx-P4fzzJM1-mfAAAA__8eF5cU" style=3D"color:007d99" target=
+=3D"_blank">Manage My Messages</a> <br> <p style=3D"font-size:10px"></p> </=
+td> </tr> <tr> <td width=3D"640" height=3D"30">=C2=A0</td> </tr> </tbody></=
+table> </td> </tr> </tbody></table> <img width=3D"1px" height=3D"1px" alt=
+=3D"" src=3D"https://email.mail1.veracross.com/o/eJxEykGOwyAMheHTlGVkGweHhc=
+9SEeK0aNJQQZTzj5jNLN__vk1ZFnSmKCQcvIfg3rrSTCzCuK8W_E4MApaCB6NImcEVJSCGSILLP=
+EOYFqSNOciOGAGYHwyfVA6cbmspt9r7lOvHNd1erXY71yNd14PhNdTfdSu5Oz_zUey8tKX-LmPb=
+AM_vj4bZ4whfa72e_z1G4kV-AwAA__-CvDxN"></div> </div></div></div>
+
+--000000000000e1cee506231e7f18--

@@ -55,7 +55,15 @@ defmodule Weekly.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:ex_aws_dynamo, "~> 4.0"},
+      {:ex_aws_ses, "~> 2.4.1"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"},
+      {:mail, "~> 0.3"},
+      {:openai, "~> 0.6.2"}
     ]
   end
 
