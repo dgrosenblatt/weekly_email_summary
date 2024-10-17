@@ -52,22 +52,24 @@ defmodule Weekly.Sender do
     messages
     |> Enum.reduce("", fn msg, acc ->
       message_id = Map.get(msg, :messageId)
-      email = S3.get_object(@bucket_name, message_id)
-      |> ExAws.request!
-      |> Map.get(:body)
-      |> Mail.parse
-      |> Mail.get_text
-      |> Map.get(:body)
+
+      email =
+        S3.get_object(@bucket_name, message_id)
+        |> ExAws.request!()
+        |> Map.get(:body)
+        |> Mail.parse()
+        |> Mail.get_text()
+        |> Map.get(:body)
 
       email <> "\n\n\n**********\n\n\n" <> acc
     end)
     |> summarize()
     |> send_email(email_address)
 
-
     for message <- messages do
       Map.get(message, :messageId) |> Message.delete()
     end
+
     Recipient.delete(email_address)
   end
 
@@ -82,6 +84,7 @@ defmodule Weekly.Sender do
         Subject: %{Data: "Weekly Summary"}
       }
     }
+
     destination = %{ToAddresses: [email_address]}
 
     SES.send_email_v2(destination, content, @from_email)
@@ -89,39 +92,43 @@ defmodule Weekly.Sender do
   end
 
   def summarize(text) do
-    response = OpenAI.chat_completion(
-      model: "gpt-4o-mini",
-      messages: [
-        %{
-          role: "system",
-          content: "You are an assistant helping a busy person summarize their emails for the week."
-        },
-        %{
-          role: "user",
-          content: "I would like you to create a summary of a few emails.
+    response =
+      OpenAI.chat_completion(
+        model: "gpt-4o-mini",
+        messages: [
+          %{
+            role: "system",
+            content:
+              "You are an assistant helping a busy person summarize their emails for the week."
+          },
+          %{
+            role: "user",
+            content:
+              "I would like you to create a summary of a few emails.
             At the beginning have a special section that lists out any important dates and required action items that are mentioned in the emails.
             The tone of the summary should be upbeat and fun.
             The summary should be readable in two minutes or fewer. Err on the side of brevity.
             The summary should start with an old-timey extremely sensationalist newspaper headline.
             The emails will be separated with new lines and stars like this- \n\n\n**********\n\n\n ."
-        },
-        %{
-          role: "user",
-          content: "Emails:"
-        },
-        %{
-          role: "user",
-          content: text
-        }
-      ]
-    )
+          },
+          %{
+            role: "user",
+            content: "Emails:"
+          },
+          %{
+            role: "user",
+            content: text
+          }
+        ]
+      )
 
     case response do
       {:ok, resp} ->
         [choice | _] = Map.get(resp, :choices)
         choice |> Map.get("message") |> Map.get("content")
 
-      {:error, msg} -> IO.inspect(msg)
+      {:error, msg} ->
+        IO.inspect(msg)
     end
   end
 end
