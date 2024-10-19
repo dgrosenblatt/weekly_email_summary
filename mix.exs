@@ -63,7 +63,8 @@ defmodule Weekly.MixProject do
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
       {:mail, "~> 0.3"},
-      {:openai, "~> 0.6.2"}
+      {:openai, "~> 0.6.2"},
+      {:mock, "~> 0.3.0", only: :test}
     ]
   end
 
