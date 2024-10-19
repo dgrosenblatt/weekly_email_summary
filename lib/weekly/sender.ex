@@ -33,8 +33,8 @@ defmodule Weekly.Sender do
         IO.inspect(error_msg)
     end
 
-    # for message <- messages do
-    #   Map.get(message, :messageId) |> Message.delete()
-    # end
+    for message <- messages do
+      Map.get(message, :messageId) |> Data.Message.delete()
+    end
   end
 end
