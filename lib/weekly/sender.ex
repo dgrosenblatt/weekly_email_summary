@@ -15,24 +15,28 @@ defmodule Weekly.Sender do
     do: IO.puts("No messages found for recipient #{email_address}. Skipping...")
 
   def process_recipient_messages(messages, email_address) do
-    summary =
-      messages
-      |> Enum.reduce("", fn msg, acc ->
-        message_id = Map.get(msg, :messageId)
-        Data.Message.fetch_content(message_id) <> "\n\n\n**********\n\n\n" <> acc
-      end)
-      |> Summary.generate()
+    summary = fetch_and_join_messages(messages) |> Summary.generate()
 
     case summary do
       {:ok, text} ->
         Mailer.send_email(email_address, text)
         IO.puts("Sent summary to #{email_address}")
+        clear_messages(messages)
 
       {:error, error_msg} ->
         IO.puts("Open AI error, skipping #{email_address}")
         IO.inspect(error_msg)
     end
+  end
 
+  def fetch_and_join_messages(messages) do
+    Enum.reduce(messages, "", fn msg, acc ->
+      message_id = Map.get(msg, :messageId)
+      Data.Message.fetch_content(message_id) <> "\n\n\n**********\n\n\n" <> acc
+    end)
+  end
+
+  def clear_messages(messages) do
     for message <- messages do
       Map.get(message, :messageId) |> Data.Message.delete()
     end

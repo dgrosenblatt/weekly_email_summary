@@ -5,6 +5,7 @@ defmodule Weekly.SummaryTest do
   alias Weekly.Data.{Message, Recipient}
 
   setup_with_mocks([
+    {IO, [], [puts: fn _ -> :ok end]},
     {Mailer, [], [send_email: fn _to, _body -> :ok end]},
     {Summary, [], [generate: fn text -> {:ok, "Summary: #{text}"} end]},
     {Recipient, [], [all: fn -> [%Recipient{emailAddress: "hello@example.com"}] end]},
@@ -31,7 +32,28 @@ defmodule Weekly.SummaryTest do
     {:ok, %{}}
   end
 
-  test "runs" do
-    assert :ok == Sender.perform()
+  test "fetches recipients and messages, summarizes, and sends an email to each" do
+    result = Sender.perform()
+
+    assert_called(Recipient.all())
+    assert_called(Message.find_by_email("hello@example.com"))
+
+    assert_called(
+      Summary.generate(
+        "Content for message 2\n\n\n**********\n\n\nContent for message 1\n\n\n**********\n\n\n"
+      )
+    )
+
+    assert_called(
+      Mailer.send_email(
+        "hello@example.com",
+        "Summary: Content for message 2\n\n\n**********\n\n\nContent for message 1\n\n\n**********\n\n\n"
+      )
+    )
+
+    assert_called(Message.delete("1"))
+    assert_called(Message.delete("2"))
+
+    assert result == :ok
   end
 end
