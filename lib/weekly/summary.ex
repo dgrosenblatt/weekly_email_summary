@@ -24,7 +24,7 @@ defmodule Weekly.Summary do
     [
       %{
         role: "system",
-        content: "You are an assistant helping a busy person summarize their emails for the week."
+        content: "You are an assistant helping a busy parent summarize their school emails for the week."
       },
       %{
         role: "user",
