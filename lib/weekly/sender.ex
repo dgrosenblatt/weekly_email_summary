@@ -46,6 +46,9 @@ defmodule Weekly.Sender do
     |> ExAws.request()
   end
 
+  def process_recipient_messages([], email_address), do:
+    IO.puts("No messages found for recipient #{email_address}. Skipping...")
+
   def process_recipient_messages(messages, email_address) do
     summary =
       messages
@@ -58,6 +61,7 @@ defmodule Weekly.Sender do
     case summary do
       {:ok, text} ->
         send_email(text, email_address)
+        IO.puts("Sent summary to #{email_address}")
 
       {:error, error_msg} ->
         IO.puts("Open AI error, skipping #{email_address}")
@@ -67,8 +71,6 @@ defmodule Weekly.Sender do
     # for message <- messages do
     #   Map.get(message, :messageId) |> Message.delete()
     # end
-
-    # Recipient.delete(email_address)
   end
 
   def send_email(summary, email_address) do
@@ -87,7 +89,5 @@ defmodule Weekly.Sender do
 
     SES.send_email_v2(destination, content, @from_email)
     |> ExAws.request!()
-
-    IO.puts("Sent summary to #{email_address}")
   end
 end
