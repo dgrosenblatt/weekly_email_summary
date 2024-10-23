@@ -67,8 +67,8 @@ config :ex_aws,
 
 # configure openai
 config :openai,
-  api_key: System.get_env("OPENAI_API_KEY"),
-  organization_key: System.get_env("OPENAI_ORGANIZATION_KEY"),
+  api_key: {:system, "OPENAI_API_KEY"},
+  organization_key: {:system, "OPENAI_ORGANIZATION_KEY"},
   http_options: [recv_timeout: 90_000]
 
 # Import environment specific config. This must remain at the bottom

@@ -2,6 +2,8 @@ defmodule Weekly.Sender do
   alias Weekly.{Data, Mailer, Summary}
 
   def perform do
+    ensure_started()
+
     for recipient <- Data.Recipient.all() do
       email_address = Map.get(recipient, :emailAddress)
       messages = Data.Message.find_by_email(email_address)
@@ -40,5 +42,12 @@ defmodule Weekly.Sender do
     for message <- messages do
       Map.get(message, :messageId) |> Data.Message.delete()
     end
+  end
+
+  def ensure_started do
+    Application.ensure_all_started(:hackney)
+    Application.ensure_started(:telemetry)
+    Application.ensure_started(:ex_aws)
+    Application.ensure_started(:openai)
   end
 end
