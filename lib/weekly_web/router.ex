@@ -15,15 +15,10 @@ defmodule WeeklyWeb.Router do
   end
 
   scope "/", WeeklyWeb do
-    pipe_through :browser
+    pipe_through :api
 
-    get "/", PageController, :home
+    resources "/signups", SignupController, only: [:create]
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", WeeklyWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:weekly, :dev_routes) do
